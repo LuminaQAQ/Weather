@@ -6,12 +6,34 @@
   <link rel="icon" href="/Weather/favicon.ico">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>天气</title>
-  <script type="module" crossorigin src="/Weather/assets/index-B8pFlU6l.js"></script>
+  <script type="module" crossorigin src="/Weather/assets/index-BE-Qs__y.js"></script>
   <link rel="stylesheet" crossorigin href="/Weather/assets/index-BuPjI3vI.css">
 </head>
 
 <body>
   <div id="app"></div>
+  <!-- <div id="allmap"></div> -->
+  <!-- <script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=QTF77KLTrZfa0c8nlF3stinfjUuNHtNs"></script> -->
+  <script type="text/javascript"
+    src="https://api.map.baidu.com/api?v=1.0&&type=webgl&ak=QTF77KLTrZfa0c8nlF3stinfjUuNHtNs"> </script>
+  <script>
+    // var map = new BMapGL.Map("allmap");
+    // var point = new BMapGL.Point(116.331398, 39.897445);
+    // map.centerAndZoom(point, 12);
+
+    var geolocation = new BMapGL.Geolocation();
+    geolocation.getCurrentPosition(function (r) {
+      if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+        var mk = new BMapGL.Marker(r.point);
+        // map.addOverlay(mk);
+        // map.panTo(r.point);
+        alert('您的位置：' + r.point.lng + ',' + r.point.lat);
+      }
+      else {
+        alert('failed' + this.getStatus());
+      }
+    });
+  </script>
 </body>
 
 </html>

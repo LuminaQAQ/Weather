@@ -1,0 +1,1 @@
+import{_ as a,r as s,a as c,c as r,b as o,t as n,i}from"./index-BE-Qs__y.js";const _={setup(){const e=s("search");return i("$axios"),{title:e}}},p={class:"main-search-wrap"};function l(e,d,f,t,h,u){return c(),r("section",p,[o("h1",null,n(t.title),1)])}const x=a(_,[["render",l],["__scopeId","data-v-013a94ce"]]);export{x as default};
