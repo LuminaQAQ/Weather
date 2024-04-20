@@ -191,7 +191,7 @@
         </section>
         <section class="location-wrap">
           <section class="img-wrap">
-            <img src="../assets/img/Nav/location.png" />
+            <img src="@/assets/img/Nav/location.png" />
           </section>
           <span class="temper-text">{{getLocationStore.city}}</span>
         </section>
