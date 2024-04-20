@@ -1014,28 +1014,18 @@ export default {
       },
       // 从api获取data
       init() {
-        // $axios.get('/v7/weather/24h', {
-        //   params: {
-        //     location: getLocationStore.getLocation
-        //   }
-        // }).then(res => {
-        //   hourlyObj.hourlyData = res.data.hourly;
-        //   weatherData = res.data.hourly[0];
+        $axios.get('/v7/weather/7d', {
+          params: {
+            location: getLocationStore.getLocation
+          }
+        }).then(res => {
+          daysForecastObj.hourlyData = res.data.daily;
+          weatherData = res.data.daily[0];
 
-        //   hourlyObj.setData('temp', 0);
-        // }).catch(e => console.log(e))
-        daysForecastObj.setData('temp', 0)
+          daysForecastObj.setData('temp', 0);
+        }).catch(e => console.log(e))
       }
     })
-    // $axios.get('/v7/weather/3d', {
-    //   params: {
-    //     location: getLocationStore.getLocation
-    //   }
-    // }).then(res => {
-
-    //   console.log(res.data.daily);
-    //   futureData.push(...res.data.daily);
-    // }).catch(e => console.log(e))
     // #endregion
     // ------- end -------
 
@@ -1155,9 +1145,8 @@ export default {
       firstScreen.style.backgroundImage = `url(/Weather/src/assets/img/FirstScreen/${weatherData.icon}.jpg)`;
 
       // 24小时天气预报
-      // hourlyObj.init();
+      hourlyObj.init();
       daysForecastObj.init();
-      hourlyObj.setData('temp', 0);
     })
 
     // ==============================================
