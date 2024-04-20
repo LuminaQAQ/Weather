@@ -1,9 +1,11 @@
-const baseURL = "/Weather/src/assets/icons";
+import { getAssetsFile } from "./handleImgFile";
+
 const rich_options = {};
+
 for (let i = 100; i < 2427; i++) {
     rich_options['icon_' + i] = {
         backgroundColor: {
-            image: `${baseURL}/${i}.svg`
+            image: getAssetsFile(`icons/${i}.svg`),
         },
         height: 16,
     }

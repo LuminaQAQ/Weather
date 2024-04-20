@@ -309,6 +309,7 @@ import date from '@/utils/date.js';
 import { useLocationStore } from "@/stores/location.js";
 import { useHourlyChartStore } from "@/stores/hourlyStore.js";
 import { useDaysChartStore } from "@/stores/daysChartStore.js";
+import { getAssetsFile } from '@/utils/handleImgFile';
 
 export default {
   components: { SgWeatherCard },
@@ -1142,7 +1143,8 @@ export default {
     onMounted(async () => {
       // 首屏的背景图片
       const firstScreen = document.querySelector('.first-screen-wrap');
-      firstScreen.style.backgroundImage = `url(/Weather/src/assets/img/FirstScreen/${weatherData.icon}.jpg)`;
+
+      firstScreen.style.backgroundImage = 'url(' + getAssetsFile('FirstScreen/'+ weatherData.icon + '.jpg') ;
 
       // 24小时天气预报
       hourlyObj.init();
