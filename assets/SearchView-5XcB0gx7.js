@@ -1,0 +1,1 @@
+import{_ as a,r as s,o as c,c as o,a as r,t as n,l as i}from"./index-BIldD-xw.js";const _={setup(){const e=s("search");return i("$axios"),{title:e}}},l={class:"main-search-wrap"};function p(e,d,f,t,h,u){return c(),o("section",l,[r("h1",null,n(t.title),1)])}const x=a(_,[["render",p],["__scopeId","data-v-013a94ce"]]);export{x as default};
