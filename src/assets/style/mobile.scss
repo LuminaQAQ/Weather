@@ -1,0 +1,53 @@
+@media screen and (max-width: 28rem) {
+  .nav-wrap {
+    .search-icon,
+    .explore-icon {
+      display: none;
+    }
+
+    .placeholder {
+      width: 5rem !important;
+      height: 1px !important;
+    }
+  }
+
+  .first-screen-wrap {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: flex-end;
+
+    .simple-weather-information,
+    .detailed-weather-information {
+      position: relative !important;
+      left: 0 !important;
+      top: 0 !important;
+    }
+
+    .simple-weather-information {
+      display: flex;
+      justify-content: flex-start;
+      align-items: flex-start;
+      width: calc(100% - 3rem);
+      flex-direction: column;
+
+      .status {
+        margin-top: 1rem;
+      }
+    }
+
+    .detailed-weather-information {
+      width: 90% !important;
+      margin-bottom: 1rem;
+    }
+  }
+
+  .weather-information-wrap {
+    .weather-category-card {
+      overflow-x: auto !important;
+    }
+    // #hourly-forecast-wrap {
+    //   width: 200% !important;
+    // }
+  }
+}

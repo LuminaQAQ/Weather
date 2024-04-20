@@ -1,0 +1,33 @@
+@import "./index.scss";
+
+.favicon-icon {
+  @include common-icon(
+    3rem,
+    "@/assets/img/favicon.png",
+    "@/assets/img/favicon.png"
+  );
+}
+
+.search-icon {
+  @include common-icon(
+    3rem,
+    "@/assets/img/Nav/search.png",
+    "@/assets/img/Nav/search-active.png"
+  );
+}
+
+.explore-icon {
+  @include common-icon(
+    3rem,
+    "@/assets/img/Nav/explore.png",
+    "@/assets/img/Nav/explore-active.png"
+  );
+}
+
+.mobile-nav-icon {
+  @include common-icon(
+    2.5rem,
+    "@/assets/img/Nav/nav.png",
+    "@/assets/img/Nav/nav.png"
+  );
+}

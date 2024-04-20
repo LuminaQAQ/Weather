@@ -1,0 +1,32 @@
+/* ------- 暗黑配色 ------- */
+/* #region  */
+$dark-text-color: #ffffff;
+$dark-border-color: #6c6c6c;
+$dark-card-color: #373737;
+$dark-bg-color: #222222;
+/* #endregion */
+/* ------- end  ------- */
+
+/* ------- 图标 ------- */
+/* #region  */
+@mixin common-icon($size, $img, $active-img) {
+  width: $size;
+  height: $size;
+  content: url($img);
+  margin: 0 1rem;
+
+  &.active-link {
+    content: url($active-img) !important;
+  }
+}
+/* #endregion */
+/* ------- end  ------- */
+
+/* ------- 流式居中 ------- */
+/* #region  */
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+}
+/* #endregion */
+/* ------- end  ------- */
