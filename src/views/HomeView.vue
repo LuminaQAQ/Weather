@@ -187,7 +187,7 @@
       <!-- #region  -->
       <section class="simple-weather-information">
         <section class="temper-wrap">
-          <span class="temper-text">{{weatherData.temp}}</span> ℃
+          <span class="temper-text">{{weatherData.obj.temp}}</span> ℃
         </section>
         <section class="location-wrap">
           <section class="img-wrap">
@@ -196,8 +196,8 @@
           <span class="temper-text">{{getLocationStore.city}}</span>
         </section>
         <section class="status">
-          <i :class="`qi-${weatherData.icon}`"></i>
-          <span>{{weatherData.text}}</span>
+          <i :class="`qi-${weatherData.obj.icon}`"></i>
+          <span>{{weatherData.obj.text}}</span>
         </section>
       </section>
       <!-- #endregion  -->
@@ -222,35 +222,35 @@
         <!-- 风速 -->
         <tr class="wind-wrap">
           <td><i class="qi-2105"></i></td>
-          <td>{{weatherData.windDir}}</td>
-          <td>{{weatherData.windScale }} 级</td>
+          <td>{{weatherData.obj.windDir}}</td>
+          <td>{{weatherData.obj.windScale }} 级</td>
         </tr>
 
         <!-- 降水量 -->
         <tr class="precip-wrap">
           <td><i class="qi-2120"></i></td>
           <td>降水量</td>
-          <td>{{weatherData.precip  }} mm</td>
+          <td>{{weatherData.obj.precip  }} mm</td>
         </tr>
 
         <!-- 湿度 -->
         <tr class="humidity-wrap">
           <td><i class="qi-2120"></i></td>
           <td>空气湿度</td>
-          <td>{{weatherData.humidity }} %</td>
+          <td>{{weatherData.obj.humidity }} %</td>
         </tr>
 
         <!-- 空气质量 -->
         <tr class="air-wrap">
           <td><i class="qi-2202"></i></td>
           <td>空气质量</td>
-          <td>{{airData.category}}</td>
+          <td>{{airData.obj.category}}</td>
         </tr>
 
         <!-- 预警 -->
         <tr class="warning-status">
-          <td><i :class="`qi-${warningData.type}`"></i></td>
-          <td>{{warningData.title}}</td>
+          <td><i :class="`qi-${warningData.obj.type}`"></i></td>
+          <td>{{warningData.obj.title}}</td>
         </tr>
       </table>
       <!-- #endregion  -->
@@ -320,6 +320,70 @@ export default {
     const firstScreen = ref(null);
     const getLocationStore = useLocationStore();
 
+
+
+    // ------- 数据变量 -------
+    // #region
+    // 天气信息
+    let weatherData = reactive({
+      obj: {
+        "obsTime": "2020-06-30T21:40+08:00",
+        "temp": "24",
+        "feelsLike": "26",
+        "icon": "101",
+        "text": "多云",
+        "wind360": "123",
+        "windDir": "东南风",
+        "windScale": "1",
+        "windSpeed": "3",
+        "humidity": "72",
+        "precip": "0.0",
+        "pressure": "1003",
+        "vis": "16",
+        "cloud": "10",
+        "dew": "21"
+      }
+    })
+
+    // 预警信息
+    let warningData = reactive({
+      obj: {
+        startTime: "2024-04-19T21:38+08:00", // 开始时间
+        endTime: "2024-04-20T21:38+08:00", // 结束时间
+
+        pubTime: "2024-04-19T21:38+08:00",  // 发布时间
+
+        sender: "福建省水文水资源勘测中心", // 预警发布单位，可能为空
+
+        severity: "Moderate", // 预警严重等级
+
+        // 预警详细文字描述
+        text: "福建省水文水资源勘测中心于2024年04月19日21时38分发布山洪灾害风险黄色预警 ：根据省气象台降雨数值预报，预计,04月19日21时至04月20日21时，以下区域可能出现山洪灾害风险：宁化县发生山洪灾害可能性较大（黄色预警）；明溪县、建宁县、光泽县、长汀县、武平县可能发生山洪灾害（蓝色预警）。其它地区也可能因局地短历时强降水引发山洪灾害，请各地注意做好实时监测、防汛预警和转移避险等防范工作。",
+        // 预警信息标题
+        title: "福建省水文水资源勘测中心发布山洪灾害风险黄色预警",
+
+        type: "1214",  // 图片
+        typeName: "山洪灾害事件", // 预警类型名称
+      }
+    });
+
+    // 空气质量
+    let airData = reactive({
+      obj: {
+        "aqi": "28", // 空气质量指数
+        "level": "1", // 空气质量指数等级
+        "category": "优", // 空气质量指数级别
+        "primary": "NA", // 空气质量的主要污染物，空气质量为优时，返回值为NA
+        "pm10": "28",  // PM10
+        "pm2p5": "5",  // PM2.5
+        "no2": "3",  // 二氧化氮
+        "so2": "2",  // 二氧化硫
+        "co": "0.2",  // 一氧化碳
+        "o3": "76",  // 臭氧
+      }
+    });
+    // #endregion
+    // ------- end -------
 
     // ------- 24小时天气预测 -------
     // #region
@@ -541,198 +605,6 @@ export default {
           "cloud": "0",
           "dew": "-27"
         },
-        {
-          "fxTime": "2021-02-17T03:00+08:00",
-          "temp": "-5",
-          "icon": "150",
-          "text": "晴",
-          "wind360": "350",
-          "windDir": "北风",
-          "windScale": "3-4",
-          "windSpeed": "16",
-          "humidity": "16",
-          "pop": "0",
-          "precip": "0.0",
-          "pressure": "1028",
-          "cloud": "0",
-          "dew": "-27"
-        },
-        {
-          "fxTime": "2021-02-17T04:00+08:00",
-          "temp": "-5",
-          "icon": "150",
-          "text": "晴",
-          "wind360": "351",
-          "windDir": "北风",
-          "windScale": "3-4",
-          "windSpeed": "16",
-          "humidity": "15",
-          "pop": "0",
-          "precip": "0.0",
-          "pressure": "1027",
-          "cloud": "0",
-          "dew": "-28"
-        },
-        {
-          "fxTime": "2021-02-17T05:00+08:00",
-          "temp": "-5",
-          "icon": "150",
-          "text": "晴",
-          "wind360": "352",
-          "windDir": "北风",
-          "windScale": "3-4",
-          "windSpeed": "16",
-          "humidity": "14",
-          "pop": "0",
-          "precip": "0.0",
-          "pressure": "1026",
-          "cloud": "0",
-          "dew": "-29"
-        },
-        {
-          "fxTime": "2021-02-17T06:00+08:00",
-          "temp": "-5",
-          "icon": "150",
-          "text": "晴",
-          "wind360": "355",
-          "windDir": "北风",
-          "windScale": "3-4",
-          "windSpeed": "14",
-          "humidity": "16",
-          "pop": "0",
-          "precip": "0.0",
-          "pressure": "1025",
-          "cloud": "0",
-          "dew": "-27"
-        },
-        {
-          "fxTime": "2021-02-17T07:00+08:00",
-          "temp": "-7",
-          "icon": "150",
-          "text": "晴",
-          "wind360": "359",
-          "windDir": "北风",
-          "windScale": "3-4",
-          "windSpeed": "16",
-          "humidity": "20",
-          "pop": "0",
-          "precip": "0.0",
-          "pressure": "1024",
-          "cloud": "0",
-          "dew": "-26"
-        },
-        {
-          "fxTime": "2021-02-17T08:00+08:00",
-          "temp": "-5",
-          "icon": "100",
-          "text": "晴",
-          "wind360": "1",
-          "windDir": "北风",
-          "windScale": "3-4",
-          "windSpeed": "14",
-          "humidity": "19",
-          "pop": "0",
-          "precip": "0.0",
-          "pressure": "1023",
-          "cloud": "0",
-          "dew": "-26"
-        },
-        {
-          "fxTime": "2021-02-17T09:00+08:00",
-          "temp": "-4",
-          "icon": "100",
-          "text": "晴",
-          "wind360": "356",
-          "windDir": "北风",
-          "windScale": "3-4",
-          "windSpeed": "14",
-          "humidity": "17",
-          "pop": "0",
-          "precip": "0.0",
-          "pressure": "1023",
-          "cloud": "0",
-          "dew": "-25"
-        },
-        {
-          "fxTime": "2021-02-17T10:00+08:00",
-          "temp": "-1",
-          "icon": "100",
-          "text": "晴",
-          "wind360": "344",
-          "windDir": "西北风",
-          "windScale": "3-4",
-          "windSpeed": "14",
-          "humidity": "14",
-          "pop": "0",
-          "precip": "0.0",
-          "pressure": "1024",
-          "cloud": "0",
-          "dew": "-26"
-        },
-        {
-          "fxTime": "2021-02-17T11:00+08:00",
-          "temp": "0",
-          "icon": "100",
-          "text": "晴",
-          "wind360": "333",
-          "windDir": "西北风",
-          "windScale": "3-4",
-          "windSpeed": "14",
-          "humidity": "12",
-          "pop": "0",
-          "precip": "0.0",
-          "pressure": "1024",
-          "cloud": "0",
-          "dew": "-26"
-        },
-        {
-          "fxTime": "2021-02-17T12:00+08:00",
-          "temp": "1",
-          "icon": "100",
-          "text": "晴",
-          "wind360": "325",
-          "windDir": "西北风",
-          "windScale": "3-4",
-          "windSpeed": "14",
-          "humidity": "10",
-          "pop": "0",
-          "precip": "0.0",
-          "pressure": "1025",
-          "cloud": "16",
-          "dew": "-28"
-        },
-        {
-          "fxTime": "2021-02-17T13:00+08:00",
-          "temp": "2",
-          "icon": "100",
-          "text": "晴",
-          "wind360": "319",
-          "windDir": "西北风",
-          "windScale": "3-4",
-          "windSpeed": "16",
-          "humidity": "8",
-          "pop": "0",
-          "precip": "0.0",
-          "pressure": "1025",
-          "cloud": "32",
-          "dew": "-29"
-        },
-        {
-          "fxTime": "2021-02-17T14:00+08:00",
-          "temp": "2",
-          "icon": "100",
-          "text": "晴",
-          "wind360": "313",
-          "windDir": "西北风",
-          "windScale": "3-4",
-          "windSpeed": "16",
-          "humidity": "9",
-          "pop": "0",
-          "precip": "0.0",
-          "pressure": "1025",
-          "cloud": "48",
-          "dew": "-27"
-        }
       ],
       // 随着tab变更data
       setData(flag = 'temp', index = 0) {
@@ -759,7 +631,7 @@ export default {
           }
         }).then(res => {
           hourlyObj.hourlyData = res.data.hourly;
-          weatherData = res.data.hourly[0];
+          weatherData.obj = res.data.hourly[0];
 
           hourlyObj.setData('temp', 0);
         }).catch(e => console.log(e))
@@ -879,122 +751,6 @@ export default {
           "cloud": "25",
           "uvIndex": "9"
         },
-        {
-          "fxDate": "2024-04-24",
-          "sunrise": "05:41",
-          "sunset": "18:46",
-          "moonrise": "19:01",
-          "moonset": "05:38",
-          "moonPhase": "满月",
-          "moonPhaseIcon": "804",
-          "tempMax": "29",
-          "tempMin": "20",
-          "iconDay": "101",
-          "textDay": "多云",
-          "iconNight": "305",
-          "textNight": "小雨",
-          "wind360Day": "0",
-          "windDirDay": "北风",
-          "windScaleDay": "1-3",
-          "windSpeedDay": "3",
-          "wind360Night": "0",
-          "windDirNight": "北风",
-          "windScaleNight": "1-3",
-          "windSpeedNight": "3",
-          "humidity": "99",
-          "precip": "0.0",
-          "pressure": "952",
-          "vis": "5",
-          "cloud": "25",
-          "uvIndex": "4"
-        },
-        {
-          "fxDate": "2024-04-25",
-          "sunrise": "05:40",
-          "sunset": "18:46",
-          "moonrise": "19:58",
-          "moonset": "06:11",
-          "moonPhase": "亏凸月",
-          "moonPhaseIcon": "805",
-          "tempMax": "24",
-          "tempMin": "20",
-          "iconDay": "305",
-          "textDay": "小雨",
-          "iconNight": "305",
-          "textNight": "小雨",
-          "wind360Day": "0",
-          "windDirDay": "北风",
-          "windScaleDay": "1-3",
-          "windSpeedDay": "3",
-          "wind360Night": "0",
-          "windDirNight": "北风",
-          "windScaleNight": "1-3",
-          "windSpeedNight": "3",
-          "humidity": "97",
-          "precip": "5.1",
-          "pressure": "951",
-          "vis": "15",
-          "cloud": "80",
-          "uvIndex": "3"
-        },
-        {
-          "fxDate": "2024-04-26",
-          "sunrise": "05:39",
-          "sunset": "18:47",
-          "moonrise": "20:58",
-          "moonset": "06:50",
-          "moonPhase": "亏凸月",
-          "moonPhaseIcon": "805",
-          "tempMax": "24",
-          "tempMin": "20",
-          "iconDay": "307",
-          "textDay": "大雨",
-          "iconNight": "151",
-          "textNight": "多云",
-          "wind360Day": "0",
-          "windDirDay": "北风",
-          "windScaleDay": "1-3",
-          "windSpeedDay": "3",
-          "wind360Night": "0",
-          "windDirNight": "北风",
-          "windScaleNight": "1-3",
-          "windSpeedNight": "3",
-          "humidity": "96",
-          "precip": "50.7",
-          "pressure": "950",
-          "vis": "22",
-          "cloud": "85",
-          "uvIndex": "3"
-        },
-        {
-          "fxDate": "2024-04-27",
-          "sunrise": "05:38",
-          "sunset": "18:47",
-          "moonrise": "22:00",
-          "moonset": "07:35",
-          "moonPhase": "亏凸月",
-          "moonPhaseIcon": "805",
-          "tempMax": "29",
-          "tempMin": "18",
-          "iconDay": "305",
-          "textDay": "小雨",
-          "iconNight": "305",
-          "textNight": "小雨",
-          "wind360Day": "0",
-          "windDirDay": "北风",
-          "windScaleDay": "1-3",
-          "windSpeedDay": "3",
-          "wind360Night": "225",
-          "windDirNight": "西南风",
-          "windScaleNight": "1-3",
-          "windSpeedNight": "3",
-          "humidity": "97",
-          "precip": "5.3",
-          "pressure": "950",
-          "vis": "14",
-          "cloud": "76",
-          "uvIndex": "3"
-        }
       ],
       // 随着tab变更data
       setData(flag = 'temp', index = 0) {
@@ -1020,8 +776,7 @@ export default {
             location: getLocationStore.getLocation
           }
         }).then(res => {
-          daysForecastObj.hourlyData = res.data.daily;
-          weatherData = res.data.daily[0];
+          daysForecastObj.data = res.data.daily;
 
           daysForecastObj.setData('temp', 0);
         }).catch(e => console.log(e))
@@ -1032,106 +787,33 @@ export default {
 
 
 
-    // ------- 数据变量 -------
-    // #region
-    // 天气信息
-    let weatherData = reactive({
-      "obsTime": "2020-06-30T21:40+08:00",
-      "temp": "24",
-      "feelsLike": "26",
-      "icon": "101",
-      "text": "多云",
-      "wind360": "123",
-      "windDir": "东南风",
-      "windScale": "1",
-      "windSpeed": "3",
-      "humidity": "72",
-      "precip": "0.0",
-      "pressure": "1003",
-      "vis": "16",
-      "cloud": "10",
-      "dew": "21"
-    })
-
-    // 预警信息
-    const warningData = reactive({
-      startTime: "2024-04-19T21:38+08:00", // 开始时间
-      endTime: "2024-04-20T21:38+08:00", // 结束时间
-
-      pubTime: "2024-04-19T21:38+08:00",  // 发布时间
-
-      sender: "福建省水文水资源勘测中心", // 预警发布单位，可能为空
-
-      severity: "Moderate", // 预警严重等级
-
-      // 预警详细文字描述
-      text: "福建省水文水资源勘测中心于2024年04月19日21时38分发布山洪灾害风险黄色预警 ：根据省气象台降雨数值预报，预计,04月19日21时至04月20日21时，以下区域可能出现山洪灾害风险：宁化县发生山洪灾害可能性较大（黄色预警）；明溪县、建宁县、光泽县、长汀县、武平县可能发生山洪灾害（蓝色预警）。其它地区也可能因局地短历时强降水引发山洪灾害，请各地注意做好实时监测、防汛预警和转移避险等防范工作。",
-      // 预警信息标题
-      title: "福建省水文水资源勘测中心发布山洪灾害风险黄色预警",
-
-      type: "1214",  // 图片
-      typeName: "山洪灾害事件", // 预警类型名称
-    });
-
-    // 七日天气
-    const futureData = reactive([]);
-
-    // 空气质量
-    const airData = reactive({
-      "aqi": "28", // 空气质量指数
-      "level": "1", // 空气质量指数等级
-      "category": "优", // 空气质量指数级别
-      "primary": "NA", // 空气质量的主要污染物，空气质量为优时，返回值为NA
-      "pm10": "28",  // PM10
-      "pm2p5": "5",  // PM2.5
-      "no2": "3",  // 二氧化氮
-      "so2": "2",  // 二氧化硫
-      "co": "0.2",  // 一氧化碳
-      "o3": "76",  // 臭氧
-    });
-    // #endregion
-    // ------- end -------
-
-
     // ==============================================
     // ==============================================
     // ==============================================
 
     // ------- 空气质量 -------
     // #region
-    // $axios.get('/v7/air/now', {
-    //   params: {
-    //     location: getLocationStore.getLocation
-    //   }
-    // }).then(res => {
-    //   airData = res.data.now;
-    // }).catch(e => console.log(e))
+    $axios.get('/v7/air/now', {
+      params: {
+        location: getLocationStore.getLocation
+      }
+    }).then(res => {
+      airData.obj = res.data.now;
+    }).catch(e => console.log(e))
     // #endregion
     // ------- end -------
 
     // ------- 预警信息获取 -------
     // #region
-    // $axios.get('/v7/warning/now', {
-    //   params: {
-    //     location: getLocationStore.getLocation
-    //   }
-    // }).then(res => {
-    //   const { warning } = res.data;
+    $axios.get('/v7/warning/now', {
+      params: {
+        location: getLocationStore.getLocation
+      }
+    }).then(res => {
+      const { warning } = res.data;
 
-    //   Object.assign(warningData, { ...warning[0] });
-    // }).catch(e => console.log(e))
-    // #endregion
-    // ------- end -------
-
-    // ------- 7日天气获取 -------
-    // #region
-    // $axios.get('/v7/weather/7d', {
-    //   params: {
-    //     location: getLocationStore.getLocation
-    //   }
-    // }).then(res => {
-    //   futureData.push(...res.data.daily);
-    // }).catch(e => console.log(e))
+      warningData.obj = warning;
+    }).catch(e => console.log(e))
     // #endregion
     // ------- end -------
 
@@ -1144,12 +826,13 @@ export default {
       // 首屏的背景图片
       const firstScreen = document.querySelector('.first-screen-wrap');
 
-      firstScreen.style.backgroundImage = 'url(' + getAssetsFile('FirstScreen/'+ weatherData.icon + '.jpg') ;
+      firstScreen.style.backgroundImage = 'url(' + getAssetsFile('FirstScreen/' + weatherData.obj.icon + '.jpg');
 
       // 24小时天气预报
       hourlyObj.init();
       daysForecastObj.init();
     })
+
 
     // ==============================================
     // ==============================================
@@ -1164,7 +847,6 @@ export default {
       daysForecastObj,
 
       weatherData,
-      futureData,
       warningData,
       airData,
     }
