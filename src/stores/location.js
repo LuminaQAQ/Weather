@@ -4,22 +4,38 @@ import { defineStore } from "pinia";
 export const useLocationStore = defineStore('getLocationStore', {
     state: () => {
         return {
-            lng: null,
-            lat: null,
+            loc: null,
             city: null,
         }
     },
     getters: {
         getLocation() {
+            const loc = window.localStorage.getItem('loc');
+            const city = window.localStorage.getItem('city');
+
+            if (loc && city) {
+                this.loc = loc;
+                this.city = city;
+
+                return
+            };
+
             if (this.lng === null || this.lat === null || this.city === null)
                 return "定位中"
-            else
-                return this.lng + ',' + this.lat;
+            else {
+                const loc = this.lng + ',' + this.lat;
+                const city = this.city;
+                return { loc, city };
+            }
         }
     },
     actions: {
         fetchLocation() {
             const that = this;
+
+            const loc = window.localStorage.getItem('loc');
+            const city = window.localStorage.getItem('city');
+            if (loc && city) return;
 
             let geolocation = new BMapGL.Geolocation();
             let myCity = new BMapGL.LocalCity();
@@ -30,6 +46,7 @@ export const useLocationStore = defineStore('getLocationStore', {
 
                     that.lng = lng;
                     that.lat = lat;
+                    window.localStorage.setItem('loc', lng + ',' + lat)
                 }
                 else {
                     alert('地址获取失败, Error Code: ' + this.getStatus());
@@ -39,6 +56,7 @@ export const useLocationStore = defineStore('getLocationStore', {
                 const cityName = result.name;
 
                 that.city = cityName;
+                window.localStorage.setItem('city', cityName)
             });
         }
     }

@@ -122,6 +122,14 @@
           max-width: calc(100% - 2rem);
         }
       }
+
+      .warning-text {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        -webkit-line-clamp: 3;
+      }
     }
     /* #endregion */
     /* ------- end  ------- */
@@ -177,7 +185,16 @@
 </style>
 
 <template>
-  <section class="main-home-wrap">
+  <section
+    class="main-home-wrap"
+    v-if="
+      hourlyObj &&
+      daysForecastObj&&
+      weatherData&&
+      warningData&&
+      airData
+      "
+  >
     <!-- 首屏 -->
     <section
       class="first-screen-wrap"
@@ -250,7 +267,7 @@
         <!-- 预警 -->
         <tr class="warning-status">
           <td><i :class="`qi-${warningData.obj.type}`"></i></td>
-          <td>{{warningData.obj.title}}</td>
+          <td class="warning-text">{{warningData.obj.text}}</td>
         </tr>
       </table>
       <!-- #endregion  -->
@@ -346,11 +363,10 @@ export default {
       init() {
         $axios.get('/v7/warning/now', {
           params: {
-            location: getLocationStore.getLocation
+            location: getLocationStore.loc
           }
         }).then(res => {
           const { warning } = res.data;
-
           warningData.obj = warning;
         }).catch(e => console.log(e))
       }
@@ -377,7 +393,7 @@ export default {
       init() {
         $axios.get('/v7/air/now', {
           params: {
-            location: getLocationStore.getLocation
+            location: getLocationStore.loc
           }
         }).then(res => {
           airData.obj = res.data.now;
@@ -653,7 +669,7 @@ export default {
       init() {
         $axios.get('/v7/weather/24h', {
           params: {
-            location: getLocationStore.getLocation
+            location: getLocationStore.loc
           }
         }).then(res => {
           hourlyObj.hourlyData = res.data.hourly;
@@ -799,7 +815,7 @@ export default {
       init() {
         $axios.get('/v7/weather/7d', {
           params: {
-            location: getLocationStore.getLocation
+            location: getLocationStore.loc
           }
         }).then(res => {
           daysForecastObj.data = res.data.daily;
@@ -829,7 +845,6 @@ export default {
       airData.init();
       warningData.init();
     })
-
 
     // ==============================================
     // ==============================================

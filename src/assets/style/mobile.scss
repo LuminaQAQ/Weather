@@ -3,6 +3,14 @@
     .explore-icon {
       display: none;
     }
+
+    .search-container {
+      .city-list-wrap {
+        max-width: 28rem !important;
+        margin: 0 1rem !important;
+        width: calc(100% - 2rem) !important;
+      }
+    }
   }
 
   .first-screen-wrap {
