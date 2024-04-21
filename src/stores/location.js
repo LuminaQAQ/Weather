@@ -17,8 +17,10 @@ export const useLocationStore = defineStore('getLocationStore', {
                 this.loc = loc;
                 this.city = city;
 
-                return
+                return { loc, city }
             };
+
+
 
             if (this.lng === null || this.lat === null || this.city === null)
                 return "定位中"
