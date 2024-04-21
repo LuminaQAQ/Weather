@@ -322,30 +322,8 @@ export default {
 
 
 
-    // ------- 数据变量 -------
+    // ------- 预警信息获取 -------
     // #region
-    // 天气信息
-    let weatherData = reactive({
-      obj: {
-        "obsTime": "2020-06-30T21:40+08:00",
-        "temp": "24",
-        "feelsLike": "26",
-        "icon": "101",
-        "text": "多云",
-        "wind360": "123",
-        "windDir": "东南风",
-        "windScale": "1",
-        "windSpeed": "3",
-        "humidity": "72",
-        "precip": "0.0",
-        "pressure": "1003",
-        "vis": "16",
-        "cloud": "10",
-        "dew": "21"
-      }
-    })
-
-    // 预警信息
     let warningData = reactive({
       obj: {
         startTime: "2024-04-19T21:38+08:00", // 开始时间
@@ -364,10 +342,25 @@ export default {
 
         type: "1214",  // 图片
         typeName: "山洪灾害事件", // 预警类型名称
+      },
+      init() {
+        $axios.get('/v7/warning/now', {
+          params: {
+            location: getLocationStore.getLocation
+          }
+        }).then(res => {
+          const { warning } = res.data;
+
+          warningData.obj = warning;
+        }).catch(e => console.log(e))
       }
     });
 
-    // 空气质量
+    // #endregion
+    // ------- end -------
+
+    // ------- 空气质量获取 -------
+    // #region
     let airData = reactive({
       obj: {
         "aqi": "28", // 空气质量指数
@@ -380,8 +373,41 @@ export default {
         "so2": "2",  // 二氧化硫
         "co": "0.2",  // 一氧化碳
         "o3": "76",  // 臭氧
+      },
+      init() {
+        $axios.get('/v7/air/now', {
+          params: {
+            location: getLocationStore.getLocation
+          }
+        }).then(res => {
+          airData.obj = res.data.now;
+        }).catch(e => console.log(e))
       }
     });
+    // #endregion
+    // ------- end -------
+
+    // ------- 实时天气获取 -------
+    // #region
+    let weatherData = reactive({
+      obj: {
+        "obsTime": "2020-06-30T21:40+08:00",
+        "temp": "24",
+        "feelsLike": "26",
+        "icon": "101",
+        "text": "多云",
+        "wind360": "123",
+        "windDir": "东南风",
+        "windScale": "1",
+        "windSpeed": "3",
+        "humidity": "72",
+        "precip": "0.0",
+        "pressure": "1003",
+        "vis": "16",
+        "cloud": "10",
+        "dew": "21"
+      },
+    })
     // #endregion
     // ------- end -------
 
@@ -786,37 +812,6 @@ export default {
     // ------- end -------
 
 
-
-    // ==============================================
-    // ==============================================
-    // ==============================================
-
-    // ------- 空气质量 -------
-    // #region
-    $axios.get('/v7/air/now', {
-      params: {
-        location: getLocationStore.getLocation
-      }
-    }).then(res => {
-      airData.obj = res.data.now;
-    }).catch(e => console.log(e))
-    // #endregion
-    // ------- end -------
-
-    // ------- 预警信息获取 -------
-    // #region
-    $axios.get('/v7/warning/now', {
-      params: {
-        location: getLocationStore.getLocation
-      }
-    }).then(res => {
-      const { warning } = res.data;
-
-      warningData.obj = warning;
-    }).catch(e => console.log(e))
-    // #endregion
-    // ------- end -------
-
     // ==============================================
     // ==============================================
     // ==============================================
@@ -831,6 +826,8 @@ export default {
       // 24小时天气预报
       hourlyObj.init();
       daysForecastObj.init();
+      airData.init();
+      warningData.init();
     })
 
 

@@ -82,8 +82,7 @@
 
     <!------- 搜索 ------->
     <!-- #region  -->
-    <router-link
-      to="/explore"
+    <span
       class="search-icon"
       active-class="active-link"
     />
@@ -93,21 +92,14 @@
     <!------- 探索 ------->
     <!-- #region  -->
     <router-link
-      to="/search"
+      to="/explore"
       class="explore-icon"
       active-class="active-link"
     />
     <!-- #endregion  -->
     <!------- end ------->
-
-    <span class="placeholder"></span>
   </nav>
 </template>
 
-<script>
-export default {
-  setup() {
-
-  }
-}
+<script setup>
 </script>

@@ -1,13 +1,7 @@
 @media screen and (max-width: 28rem) {
   .nav-wrap {
-    .search-icon,
     .explore-icon {
       display: none;
-    }
-
-    .placeholder {
-      width: 5rem !important;
-      height: 1px !important;
     }
   }
 
@@ -46,8 +40,5 @@
     .weather-category-card {
       overflow-x: auto !important;
     }
-    // #hourly-forecast-wrap {
-    //   width: 200% !important;
-    // }
   }
 }
