@@ -1,4 +1,4 @@
-@media screen and (max-width: 28rem) {
+@media screen and (max-width: 41.5625rem) {
   .nav-wrap {
     .explore-icon {
       display: none;
@@ -32,10 +32,6 @@
       align-items: flex-start;
       width: calc(100% - 3rem);
       flex-direction: column;
-
-      .status {
-        margin-top: 1rem;
-      }
     }
 
     .detailed-weather-information {
@@ -45,6 +41,29 @@
   }
 
   .weather-information-wrap {
+    flex-direction: column-reverse !important;
+
+    .weather-information-left,
+    .weather-information-right {
+      width: 100% !important;
+      max-width: none !important;
+
+      .weather-info-wrap {
+        justify-content: flex-start !important;
+        margin: 0 auto;
+
+        .sg-weather-info-card {
+          flex: 1 0 33% !important;
+          width: 33% !important;
+          max-width: 33% !important;
+
+          &.row {
+            width: 100% !important;
+            max-width: none !important;
+          }
+        }
+      }
+    }
     .weather-category-card {
       overflow-x: auto !important;
     }

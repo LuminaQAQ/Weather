@@ -40,7 +40,7 @@
 
   .website-favicon-wrap {
     @include flex-center;
-    justify-content: center;
+    justify-content: flex-start;
     flex: 1 0 auto;
 
     text-decoration: none;
@@ -123,9 +123,9 @@
   <nav class="nav-wrap">
     <!------- nav导航图标 ------->
     <!-- #region  -->
-    <section class="mobile-nav-button-wrap">
+    <!-- <section class="mobile-nav-button-wrap">
       <section class="mobile-nav-icon" />
-    </section>
+    </section> -->
     <!-- #endregion  -->
     <!------- end ------->
 

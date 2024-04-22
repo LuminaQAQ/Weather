@@ -8,10 +8,22 @@
   padding: 1rem;
   margin: 2rem 1rem;
 
+  &.row {
+    width: 100%;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    align-items: center;
+  }
+
   .title {
     font-size: 1rem;
     margin-bottom: 1rem;
     text-align: center;
+
+    .desc {
+      font-size: 0.65rem;
+      color: #a2a2a2;
+    }
   }
 
   .type-options-wrap {
@@ -25,6 +37,10 @@
       background-color: #676767;
       margin: 0 0.25rem;
       cursor: pointer;
+
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
 
       &.active {
         background-color: #3ea1ee;
@@ -45,8 +61,16 @@
     <!------- 标题 ------->
     <!-- #region  -->
     <section class="title">
-      <i class="qi-100"></i>
+      <slot name="icon">
+        <i class="qi-100"></i>
+      </slot>
       {{title}}
+
+      <p class="desc">
+        <slot name="desc">
+          {{desc}}
+        </slot>
+      </p>
     </section>
     <!-- #endregion  -->
     <!------- end ------->
@@ -55,6 +79,14 @@
     <!-- #region  -->
     <section class="weather-charts-wrap">
       <slot name="chart"></slot>
+    </section>
+    <!-- #endregion  -->
+    <!------- end ------->
+
+    <!------- 信息 ------->
+    <!-- #region  -->
+    <section class="weather-charts-wrap">
+      <slot name="information"></slot>
     </section>
     <!-- #endregion  -->
     <!------- end ------->
@@ -92,7 +124,7 @@
 import { ref } from 'vue'
 
 export default {
-  props: ['title', 'tab'],
+  props: ['title', 'tab', 'desc', 'row'],
   emits: ['changeChart'],
   setup(props, context) {
     let activeTab = ref(0);
