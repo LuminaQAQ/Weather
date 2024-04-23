@@ -21,11 +21,9 @@ export const useLocationStore = defineStore('getLocationStore', {
             };
 
 
-
-            if (this.lng === null || this.lat === null || this.city === null) {
+            if (this.loc === null || this.city === null) {
                 return false;
-            }
-            else {
+            } else {
                 const i_loc = this.lng + ',' + this.lat;
                 const i_city = this.city;
                 return { i_loc, i_city };
