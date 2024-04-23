@@ -17,7 +17,7 @@ export const useLocationStore = defineStore('getLocationStore', {
                 this.loc = loc;
                 this.city = city;
 
-                return { loc, city }
+                return loc;
             };
 
 
@@ -26,7 +26,7 @@ export const useLocationStore = defineStore('getLocationStore', {
             } else {
                 const i_loc = this.lng + ',' + this.lat;
                 const i_city = this.city;
-                return { i_loc, i_city };
+                return i_loc;
             }
         }
     },
@@ -36,7 +36,11 @@ export const useLocationStore = defineStore('getLocationStore', {
 
             const loc = window.localStorage.getItem('loc');
             const city = window.localStorage.getItem('city');
-            if (loc && city) return;
+            if (loc && city) {
+                this.city = city;
+                this.loc = loc;
+                return;
+            }
 
             let geolocation = new BMapGL.Geolocation();
             let myCity = new BMapGL.LocalCity();

@@ -495,45 +495,7 @@ export default {
     const firstScreen = ref(null);
     const getLocationStore = useLocationStore();
 
-
-
-    // ------- 预警信息获取 -------
-    // #region
-    let warningData = reactive({
-      obj: [
-        {
-          "id": "10102010020230403103000500681616",
-          "sender": "上海中心气象台",
-          "pubTime": "2023-04-03T10:30+08:00",
-          "title": "上海中心气象台发布大风蓝色预警[Ⅳ级/一般]",
-          "startTime": "2023-04-03T10:30+08:00",
-          "endTime": "2023-04-04T10:30+08:00",
-          "status": "active",
-          "level": "",
-          "severity": "Minor",
-          "severityColor": "Blue",
-          "type": "1006",
-          "typeName": "大风",
-          "urgency": "",
-          "certainty": "",
-          "text": "上海中心气象台2023年04月03日10时30分发布大风蓝色预警[Ⅳ级/一般]：受江淮气旋影响，预计明天傍晚以前本市大部地区将出现6级阵风7-8级的东南大风，沿江沿海地区7级阵风8-9级，请注意防范大风对高空作业、交通出行、设施农业等的不利影响。",
-          "related": ""
-        },
-      ],
-      init() {
-        $axios.get('/v7/warning/now', {
-          params: {
-            location: getLocationStore.loc
-          }
-        }).then(res => {
-          const { warning } = res.data;
-          warningData.obj = warning;
-        }).catch(e => console.log(e))
-      }
-    });
-
-    // #endregion
-    // ------- end -------
+    const errorCodeRegex = /^[4][0-9]{2}$/;
 
     // ------- 空气质量获取 -------
     // #region
@@ -610,7 +572,6 @@ export default {
         "o3": "76",  // 臭氧
       },
 
-
       // 随着tab变更data
       setData() {
         if (AQIChartInstance !== null) {
@@ -625,6 +586,7 @@ export default {
         const result = AQIChartStore.getAQIData(airData.obj.aqi);
         AQIChartInstance.setOption(result);
       },
+
       // 从api获取data
       init() {
         $axios.get('/v7/air/now', {
@@ -632,6 +594,13 @@ export default {
             location: getLocationStore.loc
           }
         }).then(res => {
+
+          if (errorCodeRegex.test(res.data.code)) {
+            airData.setData();
+
+            return;
+          }
+
           airData.obj = res.data.now;
           airData.setData();
         }).catch(e => console.log(e))
@@ -875,6 +844,12 @@ export default {
             location: getLocationStore.loc
           }
         }).then(res => {
+          if (errorCodeRegex.test(res.data.code)) {
+            minutelyRainData.setData();
+
+            return;
+          }
+
           minutelyRainData.obj.summary = res.data.summary || '';
           minutelyRainData.obj.data = res.data.minutely || [];
           minutelyRainData.setData();
@@ -1130,6 +1105,12 @@ export default {
             location: getLocationStore.loc
           }
         }).then(res => {
+          if (errorCodeRegex.test(res.data.code)) {
+            hourlyObj.setData();
+
+            return;
+          }
+
           hourlyObj.hourlyData = res.data.hourly;
           weatherData.obj = res.data?.hourly[0] || [];
 
@@ -1276,6 +1257,12 @@ export default {
             location: getLocationStore.loc
           }
         }).then(res => {
+          if (errorCodeRegex.test(res.data.code)) {
+            daysForecastObj.setData();
+
+            return;
+          }
+
           daysForecastObj.data = res.data.daily;
           sunriseSunsetData.data = res.data.daily[0] || [];
 
@@ -1355,6 +1342,9 @@ export default {
             type: '1,2,3,5,6,9',
           }
         }).then(res => {
+          if (errorCodeRegex.test(res.data.code)) {
+            return;
+          }
           weatherIndexData.data = res.data.daily;
 
           isInit.value = true;
@@ -1431,6 +1421,47 @@ export default {
     // #endregion
     // ------- end -------
 
+    // ------- 预警信息获取 -------
+    // #region
+    let warningData = reactive({
+      obj: [
+        {
+          "id": "10102010020230403103000500681616",
+          "sender": "上海中心气象台",
+          "pubTime": "2023-04-03T10:30+08:00",
+          "title": "上海中心气象台发布大风蓝色预警[Ⅳ级/一般]",
+          "startTime": "2023-04-03T10:30+08:00",
+          "endTime": "2023-04-04T10:30+08:00",
+          "status": "active",
+          "level": "",
+          "severity": "Minor",
+          "severityColor": "Blue",
+          "type": "1006",
+          "typeName": "大风",
+          "urgency": "",
+          "certainty": "",
+          "text": "上海中心气象台2023年04月03日10时30分发布大风蓝色预警[Ⅳ级/一般]：受江淮气旋影响，预计明天傍晚以前本市大部地区将出现6级阵风7-8级的东南大风，沿江沿海地区7级阵风8-9级，请注意防范大风对高空作业、交通出行、设施农业等的不利影响。",
+          "related": ""
+        },
+      ],
+      init() {
+        $axios.get('/v7/warning/now', {
+          params: {
+            location: getLocationStore.loc
+          }
+        }).then(res => {
+          if (errorCodeRegex.test(res.data.code)) {
+            return;
+          }
+
+          warningData.obj = res.data.warning;
+        }).catch(e => console.log(e))
+      }
+    });
+
+    // #endregion
+    // ------- end -------
+
     // ==============================================
     // ==============================================
     // ==============================================
@@ -1443,10 +1474,9 @@ export default {
         hourlyObj.init();
         daysForecastObj.init();
         airData.init();
-        warningData.init();
-        airData.init();
         minutelyRainData.init();
         weatherIndexData.init();
+        warningData.init();
       }, 100)
     })
 
