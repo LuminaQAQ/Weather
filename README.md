@@ -2,6 +2,8 @@
 
 技术栈: Vue3 + Scss + js
 
+接口次数不足时, 会返回伪数据
+
 网页预览: [网址](https://luminaqaq.github.io/Weather/#/home)
 
 ---
