@@ -10,6 +10,7 @@ const instance = axios.create({
     },
     timeout: 15000,
     headers: {},
+    
 })
 
 export default instance;

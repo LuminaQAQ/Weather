@@ -25,9 +25,9 @@ export const useLocationStore = defineStore('getLocationStore', {
             if (this.lng === null || this.lat === null || this.city === null)
                 return "定位中"
             else {
-                const loc = this.lng + ',' + this.lat;
-                const city = this.city;
-                return { loc, city };
+                const i_loc = this.lng + ',' + this.lat;
+                const i_city = this.city;
+                return { i_loc, i_city };
             }
         }
     },

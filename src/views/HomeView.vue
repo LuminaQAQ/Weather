@@ -194,15 +194,11 @@
 </style>
 
 <template>
-  <section
-    class="main-home-wrap"
-    v-if="
-      hourlyObj &&
-      daysForecastObj&&
-      weatherData&&
-      warningData&&
-      airData"
-  >
+  <section class="main-home-wrap">
+    <template v-if="!isInit">
+      <loading-status />
+    </template>
+
     <!-- 首屏 -->
     <section
       class="first-screen-wrap"
@@ -274,8 +270,8 @@
 
         <!-- 预警 -->
         <tr class="warning-status">
-          <td><i :class="`qi-${warningData.obj[0].type}`"></i></td>
-          <td class="warning-text">{{warningData.obj[0].text}}</td>
+          <td><i :class="`qi-${warningData.obj[0].type || ''}`"></i></td>
+          <td class="warning-text">{{warningData.obj[0].text || ''}}</td>
         </tr>
       </table>
       <!-- #endregion  -->
@@ -490,9 +486,10 @@ import SgInfoCard from '@/components/SgInfoCard.vue';
 import SgWarningInfoItem from '../components/SgWarningInfoItem.vue';
 import SgWeatherIndexItem from '../components/SgWeatherIndexItem.vue';
 import SunriseSunsetItem from '../components/SunriseSunset.vue';
+import LoadingStatus from '../components/LoadingStatus.vue'
 
 export default {
-  components: { SgWeatherCard, SgInfoCard, SgWarningInfoItem, SgWeatherIndexItem, SunriseSunsetItem },
+  components: { SgWeatherCard, SgInfoCard, SgWarningInfoItem, SgWeatherIndexItem, SunriseSunsetItem, LoadingStatus },
   setup() {
 
     const $axios = inject('$axios');
@@ -696,7 +693,7 @@ export default {
         icon: 'qi-399',
         desc: 'dew',
         title: '露点',
-        unit: '°C',
+        unit: '%',
       },
       {
         icon: 'qi-2111',
@@ -881,8 +878,8 @@ export default {
             location: getLocationStore.loc
           }
         }).then(res => {
-          minutelyRainData.obj.summary = res.data.summary;
-          minutelyRainData.obj.data = res.data.minutely;
+          minutelyRainData.obj.summary = res.data.summary || '';
+          minutelyRainData.obj.data = res.data.minutely || [];
           minutelyRainData.setData();
         }).catch(e => console.log(e))
       },
@@ -1137,7 +1134,7 @@ export default {
           }
         }).then(res => {
           hourlyObj.hourlyData = res.data.hourly;
-          weatherData.obj = res.data.hourly[0];
+          weatherData.obj = res.data.hourly[0] || [];
 
           hourlyObj.setData('temp', 0);
         }).catch(e => console.log(e))
@@ -1283,7 +1280,7 @@ export default {
           }
         }).then(res => {
           daysForecastObj.data = res.data.daily;
-          sunriseSunsetData.data = res.data.daily[0];
+          sunriseSunsetData.data = res.data.daily[0] || [];
 
           daysForecastObj.setData('temp', 0);
         }).catch(e => console.log(e))
@@ -1294,6 +1291,7 @@ export default {
 
     // ------- 天气指数预报 -------
     // #region
+    let isInit = ref(false);
     const weatherIndexData = reactive({
       data: [{
         "date": "2021-12-16",
@@ -1361,6 +1359,8 @@ export default {
           }
         }).then(res => {
           weatherIndexData.data = res.data.daily;
+
+          isInit.value = true;
         }).catch(e => console.log(e))
       }
     });
@@ -1440,11 +1440,6 @@ export default {
 
 
     onMounted(async () => {
-      // 首屏的背景图片
-      const firstScreen = document.querySelector('.first-screen-wrap');
-
-      firstScreen.style.backgroundImage = 'url(' + getAssetsFile('FirstScreen/' + weatherData.obj.icon + '.jpg');
-
       hourlyObj.init();
       daysForecastObj.init();
       airData.init();
@@ -1452,7 +1447,6 @@ export default {
       airData.init();
       minutelyRainData.init();
       weatherIndexData.init();
-
     })
 
     // ==============================================
@@ -1476,6 +1470,9 @@ export default {
       warningData,
       airData,
       sunriseSunsetData,
+
+
+      isInit,
     }
   }
 }
