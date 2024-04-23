@@ -32,7 +32,7 @@ export default {
   <section class="main-container">
     <header-bar />
 
-    <template v-if=" locationStore.getLocation !== '定位中' ">
+    <template v-if="locationStore.loc && locationStore.city">
       <div class="center-wrap">
         <router-view />
       </div>

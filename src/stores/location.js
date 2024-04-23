@@ -22,8 +22,9 @@ export const useLocationStore = defineStore('getLocationStore', {
 
 
 
-            if (this.lng === null || this.lat === null || this.city === null)
-                return "定位中"
+            if (this.lng === null || this.lat === null || this.city === null) {
+                return false;
+            }
             else {
                 const i_loc = this.lng + ',' + this.lat;
                 const i_city = this.city;
@@ -48,10 +49,15 @@ export const useLocationStore = defineStore('getLocationStore', {
 
                     that.lng = lng;
                     that.lat = lat;
+                    that.loc = lng + ',' + lat;
                     window.localStorage.setItem('loc', lng + ',' + lat)
                 }
                 else {
                     alert('地址获取失败, Error Code: ' + this.getStatus());
+
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000);
                 }
             });
             myCity.get(function (result) {

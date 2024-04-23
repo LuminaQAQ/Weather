@@ -195,9 +195,6 @@
 
 <template>
   <section class="main-home-wrap">
-    <template v-if="!isInit">
-      <loading-status />
-    </template>
 
     <!-- 首屏 -->
     <section
@@ -1134,7 +1131,7 @@ export default {
           }
         }).then(res => {
           hourlyObj.hourlyData = res.data.hourly;
-          weatherData.obj = res.data.hourly[0] || [];
+          weatherData.obj = res.data?.hourly[0] || [];
 
           hourlyObj.setData('temp', 0);
         }).catch(e => console.log(e))
@@ -1440,13 +1437,17 @@ export default {
 
 
     onMounted(async () => {
-      hourlyObj.init();
-      daysForecastObj.init();
-      airData.init();
-      warningData.init();
-      airData.init();
-      minutelyRainData.init();
-      weatherIndexData.init();
+
+      setTimeout(() => {
+
+        hourlyObj.init();
+        daysForecastObj.init();
+        airData.init();
+        warningData.init();
+        airData.init();
+        minutelyRainData.init();
+        weatherIndexData.init();
+      }, 100)
     })
 
     // ==============================================
