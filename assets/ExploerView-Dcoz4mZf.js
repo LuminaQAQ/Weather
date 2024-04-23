@@ -1,0 +1,1 @@
+import{_ as s,r as o,o as a,c,a as r,t as n,s as i}from"./index-CQa47zm2.js";const p={setup(){const e=o("explore");return i("$axios"),{title:e}}},l={class:"main-explore-wrap"};function _(e,d,f,t,x,u){return a(),c("section",l,[r("h1",null,n(t.title),1)])}const $=s(p,[["render",_],["__scopeId","data-v-c85319cd"]]);export{$ as default};
