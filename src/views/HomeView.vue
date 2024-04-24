@@ -266,7 +266,10 @@
         </tr>
 
         <!-- 预警 -->
-        <tr class="warning-status">
+        <tr
+          class="warning-status"
+          v-if="warningData.obj[0]"
+        >
           <td><i :class="`qi-${warningData.obj[0].type || ''}`"></i></td>
           <td class="warning-text">{{warningData.obj[0].text || ''}}</td>
         </tr>
@@ -596,6 +599,7 @@ export default {
         }).then(res => {
 
           if (errorCodeRegex.test(res.data.code)) {
+            console.log('airData', res.data?.code);
             airData.setData();
 
             return;
@@ -845,6 +849,7 @@ export default {
           }
         }).then(res => {
           if (errorCodeRegex.test(res.data.code)) {
+            console.log('minutelyRainData', res.data?.code);
             minutelyRainData.setData();
 
             return;
@@ -1106,6 +1111,7 @@ export default {
           }
         }).then(res => {
           if (errorCodeRegex.test(res.data.code)) {
+            console.log('hourlyObj', res.data?.code);
             hourlyObj.setData();
 
             return;
@@ -1258,6 +1264,7 @@ export default {
           }
         }).then(res => {
           if (errorCodeRegex.test(res.data.code)) {
+            console.log('daysForecastObj', res.data?.code);
             daysForecastObj.setData();
 
             return;
@@ -1343,6 +1350,7 @@ export default {
           }
         }).then(res => {
           if (errorCodeRegex.test(res.data.code)) {
+            console.log('weatherIndexData', res.data?.code);
             return;
           }
           weatherIndexData.data = res.data.daily;
@@ -1451,6 +1459,7 @@ export default {
           }
         }).then(res => {
           if (errorCodeRegex.test(res.data.code)) {
+            console.log('warningData', res.data?.code);
             return;
           }
 
